@@ -4,13 +4,19 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 #install apache package
-package 'apache' do
-	package_name 'httpd'
-	action :install
+if node['paltform_family'] == 'rhel'
+	package = 'httpd'
+elsif node['platform_family'] == 'debain'
+	package = 'apache2'
 end
-#what do do with installed service
-service 'apache' do
+
+package 'apache2' do
+	package_name package
+	action:install
+end
+
+service 'apache2' do
 	service_name 'httpd'
-	action [:enable, :start]
+	action[:enable,:start]
 end
 
